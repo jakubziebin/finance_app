@@ -25,6 +25,7 @@ export default {
       });
       this.amount = 0;
       this.description = '';
+      this.$store.dispatch('loadState');
     }
   }
 };

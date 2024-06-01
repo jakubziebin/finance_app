@@ -1,16 +1,32 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard-container">
     <h1>Witaj, {{ username }}!</h1>
-    <h2>Zarządzaj budżetem!</h2>
-    <Income/>
-    <Expense/>
+    <div class="budget">
+      <div class="budget-item">
+        <h2>Przychody</h2>
+        <p>{{ totalIncome }}</p>
+      </div>
+      <div class="budget-item">
+        <h2>Wydatki</h2>
+        <p>{{ totalExpense }}</p>
+      </div>
+      <div class="budget-item">
+        <h2>Saldo</h2>
+        <p>{{ balance }}</p>
+      </div>
+    </div>
+    <h2>Zarządzaj budżetem</h2>
+    <div class="add-money">
+      <Income/>
+      <Expense/>
+    </div>
     <br>
     <router-link to="/report">Zobacz Raport Finansowy</router-link>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import Income from '../components/IncomeComponent.vue';
 import Expense from '../components/ExpenseComponent.vue';
 
@@ -22,25 +38,46 @@ export default {
   data() {
     return {
       username: localStorage.getItem('username') || ''
-  };
+    };
   },
   computed: {
-    ...mapState(['incomes', 'expenses'])
-  },
-  methods: {
-    ...mapActions(['addIncome', 'addExpense'])
+    ...mapState(['incomes', 'expenses']),
+    totalIncome() {
+      return this.incomes.reduce((total, income) => total + (income?.amount || 0), 0);
+    },
+    totalExpense() {
+      return this.expenses.reduce((total, expense) => total + (expense?.amount || 0), 0);
+    },
+    balance() {
+      return this.totalIncome - this.totalExpense;
+    }
   },
 };
-</script>  
+</script>
 
 <style scoped>
-.dashboard {
+.dashboard-container {
   text-align: center;
   margin-top: 50px;
 }
-.dashboard a {
-  text-decoration: none;
-  color: #1E90FF;
-  font-weight: bold;
+
+.budget {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.budget-item {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  box-shadow: 0px 0px 10px rgba(194, 190, 190, 0.1);
+}
+
+.add-money {
+  display: flex;
+  justify-content: space-around;
 }
 </style>
