@@ -75,6 +75,15 @@ app.get('/api/data', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+app.delete('/api/clear', async (req, res) => {
+    try {
+      await Money.deleteMany({});
+      res.status(200).send('All data has been cleared from MongoDB');
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
   
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

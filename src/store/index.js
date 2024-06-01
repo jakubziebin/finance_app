@@ -53,10 +53,14 @@ export default createStore({
         console.error('Error during setting data:', error);
       }
     },
-    clearAllData({ commit }) {
-      commit('clearAllData');
-    }
+    async clearAllData({ commit }) {
+      try {
+        await axios.delete(`${backendURL}/api/clear`);
+        commit('clearAllData');
+      } catch (error) {
+        console.error('Error during clearing data:', error);
+      }
+    }    
   },
-  
   modules: {}
 });
