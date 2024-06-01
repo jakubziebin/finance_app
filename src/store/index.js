@@ -1,4 +1,7 @@
 import { createStore } from 'vuex';
+import axios from 'axios';
+
+const backendURL = 'http://localhost:5000';
 
 export default createStore({
   state: {
@@ -6,22 +9,38 @@ export default createStore({
     expenses: []
   },
   mutations: {
-    addIncome(state, income) {
-      state.incomes.push(income);
-      localStorage.setItem('incomes', JSON.stringify(state.incomes));
+    setIncomes(state, incomes) {
+      state.incomes = incomes;
     },
-    addExpense(state, expense) {
-      state.expenses.push(expense);
-      localStorage.setItem('expenses', JSON.stringify(state.expenses));
+    setExpenses(state, expenses) {
+      state.expenses = expenses;
     },
-    loadState(state) {
-      const incomes = localStorage.getItem('incomes');
-      const expenses = localStorage.getItem('expenses');
-      if (incomes) {
-        state.incomes = JSON.parse(incomes);
+  },
+  actions: {
+    async addIncome({ commit }, income) {
+      try {
+        const response = await axios.post(`${backendURL}/api/incomes`, { income });
+        commit('addIncome', response.data);
+      } catch (error) {
+        console.error('Error during addig income:', error);
       }
-      if (expenses) {
-        state.expenses = JSON.parse(expenses);
+    },
+    async addExpense({ commit }, expense) {
+      try {
+        const response = axios.post(`${backendURL}/api/expenses`, { expense });
+        commit('addExpense', response.data);
+      } catch (error) {
+        console.error('Error during addig expense:', error);
+      }
+    },
+    async loadState({ commit }) {
+      try {
+        const response = await axios.get(`${backendURL}/api/data`);
+        const { incomes, expenses } = response.data;
+        commit('setIncomes', incomes);
+        commit('setExpenses', expenses);
+      } catch (error) {
+        console.error('Error during setting data:', error);
       }
     },
     clearIncomes(state) {
@@ -31,22 +50,6 @@ export default createStore({
       state.expenses = [];
     }
   },
-  actions: {
-    addIncome({ commit }, income) {
-      commit('addIncome', income);
-    },
-    addExpense({ commit }, expense) {
-      commit('addExpense', expense);
-    },
-    loadState({ commit }) {
-      commit('loadState');
-    },
-    clearAllData({ commit }) {
-      commit('clearIncomes');
-      commit('clearExpenses');
-      localStorage.removeItem('incomes');
-      localStorage.removeItem('expenses');
-    }
-  },
+  
   modules: {}
 });

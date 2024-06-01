@@ -19,10 +19,9 @@ export default {
   },
   methods: {
     submit() {
-      this.$emit('add-income', {
+      this.$store.dispatch('addIncome', {
         amount: this.amount,
-        description: this.description,
-        date: new Date().toISOString()
+        description: this.description
       });
       this.amount = 0;
       this.description = '';

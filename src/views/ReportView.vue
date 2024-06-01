@@ -26,12 +26,15 @@ export default {
     ...mapState(['incomes', 'expenses'])
   },
   methods: {
-    ...mapActions(['clearAllData']),
+    ...mapActions(['clearAllData', "loadState"]),
     clearData() {
       if (confirm('Czy na pewno chcesz wyczyścić wszystkie dane?')) {
         this.clearAllData();
       }
     }
+  },
+  mounted() {
+    this.loadState();
   }
 };
 </script>

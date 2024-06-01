@@ -4,7 +4,6 @@
     <Income @add-income="addIncome" />
     <Expense @add-expense="addExpense" />
     <Budget :incomes="incomes" :expenses="expenses" />
-    <router-link :to="{ name: 'budget', query: { incomes: JSON.stringify(incomes), expenses: JSON.stringify(expenses) }}">Zobacz Bilans</router-link>
     <br>
     <router-link to="/report">Zobacz Raport Finansowy</router-link>
   </div>
@@ -24,11 +23,8 @@ export default {
     ...mapState(['incomes', 'expenses'])
   },
   methods: {
-    ...mapActions(['addIncome', 'addExpense', 'loadState'])
+    ...mapActions(['addIncome', 'addExpense'])
   },
-  created() {
-    this.loadState();
-  }
 };
 </script>  
 

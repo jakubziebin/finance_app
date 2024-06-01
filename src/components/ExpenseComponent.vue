@@ -19,10 +19,9 @@ export default {
   },
   methods: {
     submit() {
-      this.$emit('add-expense', {
+      this.$store.dispatch('addExpense', {
         amount: this.amount,
-        description: this.description,
-        date: new Date().toISOString()
+        description: this.description
       });
       this.amount = 0;
       this.description = '';
