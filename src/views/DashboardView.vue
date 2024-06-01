@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Income from '../components/IncomeComponent.vue';
 import Expense from '../components/ExpenseComponent.vue';
 import BudgetLimit from '../components/BudgetLimit.vue';
@@ -43,6 +43,10 @@ export default {
       username: localStorage.getItem('username') || ''
     };
   },
+  methods: {
+    ...mapActions(["loadState"]),
+
+  },
   computed: {
     ...mapState(['incomes', 'expenses']),
     totalIncome() {
@@ -55,6 +59,9 @@ export default {
       return this.totalIncome - this.totalExpense;
     }
   },
+  mounted() {
+    this.loadState();
+  }
 };
 </script>
 
