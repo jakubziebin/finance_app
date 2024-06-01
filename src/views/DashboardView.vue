@@ -1,9 +1,9 @@
 <template>
   <div class="dashboard">
-    <h1>Zarządzaj budżetem!</h1>
-    <Income @add-income="addIncome" />
-    <Expense @add-expense="addExpense" />
-    <Budget :incomes="incomes" :expenses="expenses" />
+    <h1>Witaj, {{ username }}!</h1>
+    <h2>Zarządzaj budżetem!</h2>
+    <Income/>
+    <Expense/>
     <br>
     <router-link to="/report">Zobacz Raport Finansowy</router-link>
   </div>
@@ -18,6 +18,11 @@ export default {
   components: {
     Income,
     Expense,
+  },
+  data() {
+    return {
+      username: localStorage.getItem('username') || ''
+  };
   },
   computed: {
     ...mapState(['incomes', 'expenses'])

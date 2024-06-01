@@ -15,6 +15,16 @@ export default createStore({
     setExpenses(state, expenses) {
       state.expenses = expenses;
     },
+    addIncome(state, income) {
+      state.incomes.push(income);
+    },
+    addExpense(state, expense) {
+      state.expenses.push(expense);
+    },
+    clearAllData(state) {
+      state.incomes = [];
+      state.expenses = [];
+    }
   },
   actions: {
     async addIncome({ commit }, income) {
@@ -43,11 +53,8 @@ export default createStore({
         console.error('Error during setting data:', error);
       }
     },
-    clearIncomes(state) {
-      state.incomes = [];
-    },
-    clearExpenses(state) {
-      state.expenses = [];
+    clearAllData({ commit }) {
+      commit('clearAllData');
     }
   },
   

@@ -1,10 +1,17 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'; 
 import Dashboard from '../views/DashboardView.vue';
-import ReportView from '../views/ReportView.vue'
+import ReportView from '../views/ReportView.vue';
+import Login from '../views/LoginView.vue';
 
 const routes = [
   {
     path: '/',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard
   },
