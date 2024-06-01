@@ -18,6 +18,7 @@
     <h2>Zarządzaj budżetem</h2>
     <div class="add-money">
       <Income/>
+      <BudgetLimit/>
       <Expense/>
     </div>
     <br>
@@ -29,11 +30,13 @@
 import { mapState } from 'vuex';
 import Income from '../components/IncomeComponent.vue';
 import Expense from '../components/ExpenseComponent.vue';
+import BudgetLimit from '../components/BudgetLimit.vue';
 
 export default {
   components: {
     Income,
     Expense,
+    BudgetLimit
   },
   data() {
     return {
