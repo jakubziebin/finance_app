@@ -1,53 +1,56 @@
 <template>
-    <div class="budget-limit">
-      <h2>Limit wydatków</h2>
-      <div class="input-container">
-        <input v-model="limit" type="number" placeholder="Wprowadź limit" />
-        <button @click="setLimit">Ustaw limit</button>
-      </div>
-      <div class="info-container">
-        <p v-if="limitExceeded" class="exceeded">Limit wydatków został przekroczony!</p>
-        <p v-else-if="limitReached" class="reached">Osiągnięto limit wydatków!</p>
-        <h3>Brakuje do limitu:</h3>
-        <p>{{ missingToLimit }}</p>
-      </div>
+  <div class="budget-limit">
+    <h2>Limit wydatków</h2>
+    <div class="input-container">
+      <input v-model="localLimit" type="number" placeholder="Wprowadź limit" />
+      <button @click="setLimit">Ustaw limit</button>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        limit: 0
-      };
+    <div class="info-container">
+      <p v-if="limitExceeded" class="exceeded">Limit wydatków został przekroczony!</p>
+      <p v-else-if="limitReached" class="reached">Osiągnięto limit wydatków!</p>
+      <h3>Brakuje do limitu:</h3>
+      <p>{{ missingToLimit }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      localLimit: 0
+    };
+  },
+  computed: {
+    limit() {
+      return this.$store.state.budgetLimit;
     },
-    computed: {
-      limitExceeded() {
-        return this.totalExpense >= this.limit && this.limit > 0;
-      },
-      limitReached() {
-        return this.totalExpense === this.limit && this.limit > 0;
-      },
-      totalExpense() {
-        return this.$store.state.expenses.reduce((total, expense) => total + (expense?.amount || 0), 0);
-      },
-      missingToLimit() {
-        if (this.limit > 0) {
-          let missing = this.limit - this.totalExpense;
-          return missing > 0 ? missing : 0;
-        } else {
-          return 'Brak limitu';
-        }
-      }
+    limitExceeded() {
+      return this.totalExpense > this.limit && this.limit > 0;
     },
-    methods: {
-      setLimit() {
-        this.$store.commit('setBudgetLimit', this.limit);
+    limitReached() {
+      return this.totalExpense === this.limit && this.limit > 0;
+    },
+    totalExpense() {
+      return this.$store.state.expenses.reduce((total, expense) => total + (expense?.amount || 0), 0);
+    },
+    missingToLimit() {
+      if (this.limit > 0) {
+        let missing = this.limit - this.totalExpense;
+        return missing > 0 ? missing : 0;
+      } else {
+        return 'Brak limitu';
       }
     }
-  };
-  </script>
-  
+  },
+  methods: {
+    setLimit() {
+      this.$store.dispatch('setBudgetLimit', this.localLimit);
+    }
+  }
+};
+</script>
+
 <style scoped>
 .budget-limit {
   padding: 20px;

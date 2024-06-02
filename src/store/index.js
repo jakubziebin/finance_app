@@ -6,21 +6,30 @@ const backendURL = 'http://localhost:5000';
 export default createStore({
   state: {
     incomes: [],
-    expenses: []
+    expenses: [],
+    budgetLimit: 0
   },
   mutations: {
     setIncomes(state, incomes) {
       state.incomes = incomes;
     },
+
     setExpenses(state, expenses) {
       state.expenses = expenses;
     },
+
     addIncome(state, income) {
       state.incomes.push(income);
     },
+
     addExpense(state, expense) {
       state.expenses.push(expense);
     },
+
+    setBudgetLimit(state, limit) {
+      state.budgetLimit = limit;
+    },
+
     clearAllData(state) {
       state.incomes = [];
       state.expenses = [];
@@ -35,6 +44,7 @@ export default createStore({
         console.error('Error during addig income:', error);
       }
     },
+
     async addExpense({ commit }, expense) {
       try {
         const response = await axios.post(`${backendURL}/api/expenses`, { expense });
@@ -43,6 +53,7 @@ export default createStore({
         console.error('Error during addig expense:', error);
       }
     },
+
     async loadState({ commit }) {
       try {
         const response = await axios.get(`${backendURL}/api/data`);
@@ -53,6 +64,11 @@ export default createStore({
         console.error('Error during setting data:', error);
       }
     },
+
+    async setBudgetLimit({ commit }, limit) {
+      commit('setBudgetLimit', limit);
+    },
+
     async clearAllData({ commit }) {
       try {
         await axios.delete(`${backendURL}/api/clear`);
@@ -61,6 +77,5 @@ export default createStore({
         console.error('Error during clearing data:', error);
       }
     }    
-  },
-  modules: {}
+  }
 });
