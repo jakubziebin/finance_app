@@ -37,7 +37,7 @@ export default createStore({
     },
     async addExpense({ commit }, expense) {
       try {
-        const response = axios.post(`${backendURL}/api/expenses`, { expense });
+        const response = await axios.post(`${backendURL}/api/expenses`, { expense });
         commit('addExpense', response.data);
       } catch (error) {
         console.error('Error during addig expense:', error);

@@ -18,14 +18,18 @@ export default {
     };
   },
   methods: {
-    submit() {
-      this.$store.dispatch('addIncome', {
-        amount: this.amount,
-        description: this.description
-      });
-      this.amount = 0;
-      this.description = '';
-      this.$store.dispatch('loadState');
+    async submit() {
+      try {
+        await this.$store.dispatch('addIncome', {
+          amount: this.amount,
+          description: this.description
+        });
+        this.amount = 0;
+        this.description = '';
+        this.$store.dispatch('loadState');
+      } catch (error) {
+        console.error('Error adding income:', error);
+      }
     }
   }
 };
